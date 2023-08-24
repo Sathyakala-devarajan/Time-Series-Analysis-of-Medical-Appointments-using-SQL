@@ -1,0 +1,129 @@
+MODULE – 2
+import numpy as np
+import pandas as pd
+import module1 as m1
+
+TASK – 1: Drop the unwanted 
+This Python function, drop_columns(), renames the columns of a DataFrame m1, drops the columns 'PatientId', 'AppointmentID', and 'Neighbourhood' from the DataFrame, and returns the modified DataFrame with these columns removed.
+def drop_columns():
+    ds = m1.rename_columns()
+    # Method to drop unnecessary columns from the DataFrame.
+    # Returns: DataFrame with specified columns dropped.
+    # List of columns to drop
+    columns_to_drop = ['PatientId', 'AppointmentID', 'Neighbourhood']
+    # Drop the specified columns
+    ds = ds.drop(columns=columns_to_drop)
+    return ds
+***** Task6 ****
+Gender ScheduledDay AppointmentDay ... Handicap SMSRecevied NoShow
+    0 F 2016-04-29 2016-04-29 ... 0 0 No
+    1 M 2016-04-29 2016-04-29 ... 0 0 No
+    2 F 2016-04-29 2016-04-29 ... 0 0 No
+    3 F 2016-04-29 2016-04-29 ... 0 0 No
+    4 F 2016-04-29 2016-04-29 ... 0 0 No
+    ... ... ... ... ... ... ... ...
+    110522 F 2016-05-03 2016-06-07 ... 0 1 No
+    110523 F 2016-05-03 2016-06-07 ... 0 1 No
+    110524 F 2016-04-27 2016-06-07 ... 0 1 No
+    110525 F 2016-04-27 2016-06-07 ... 0 1 No
+    110526 F 2016-04-27 2016-06-07 ... 0 1 No
+    
+    [110527 rows x 11 columns]
+TASK – 2: Creating New column
+The create_bin() function generates age group labels and categorizes the 'Age' values into bins with 20-year intervals. It creates a new column 'Age_group' containing the corresponding age group label for each individual and returns the modified DataFrame ds with this additional column for further analysis.
+def create_bin():
+    ds = drop_columns()
+    #First Drop rows with Age == 0
+    ds = ds[ds['Age'] != 0]
+    # Generating labels for age intervals (e.g., '1 - 20', '21 - 40', etc.)
+    labels = ["{0} - {1}".format(i, i + 20) for i in range(1, 118, 20)]
+    # Using the pd.cut() function to categorize ages into groups(use bins = range(1, 130, 20) ,right=False and use the given labels)
+    ds['Age_group'] = pd.cut(ds['Age'], bins=range(1, 130, 20), labels=labels, right=False)
+    # Returning the modified dataset with assigned age groups
+    return ds
+***** Task7 ****
+     Gender ScheduledDay AppointmentDay ... SMSRecevied NoShow Age_group
+    0 F 2016-04-29 2016-04-29 ... 0 No 61 - 81
+    1 M 2016-04-29 2016-04-29 ... 0 No 41 - 61
+    2 F 2016-04-29 2016-04-29 ... 0 No 61 - 81
+    3 F 2016-04-29 2016-04-29 ... 0 No 1 - 21
+    4 F 2016-04-29 2016-04-29 ... 0 No 41 - 61
+    ... ... ... ... ... ... ... ...
+    110522 F 2016-05-03 2016-06-07 ... 1 No 41 - 61
+    110523 F 2016-05-03 2016-06-07 ... 1 No 41 - 61
+    110524 F 2016-04-27 2016-06-07 ... 1 No 21 - 41
+    110525 F 2016-04-27 2016-06-07 ... 1 No 21 - 41
+    110526 F 2016-04-27 2016-06-07 ... 1 No 41 - 61
+    
+    [106988 rows x 12 columns]
+TASK-3: Drop Column
+The drop() function is used to streamline the process of removing the 'Age' column from the DataFrame containing age group information, and it returns the DataFrame ds without the 'Age' column, making it more focused on the categorized age groups for subsequent analysis.
+def drop():
+    ds = create_bin()
+    # Method to drop the original 'Age' column from the DataFrame.
+    ds = ds.drop(columns=['Age'])
+    # Returns: DataFrame with the 'Age' column dropped.
+    return ds
+***** Task8 ****
+     Gender ScheduledDay AppointmentDay ... SMSRecevied NoShow Age_group
+    0 F 2016-04-29 2016-04-29 ... 0 No 61 - 81
+    1 M 2016-04-29 2016-04-29 ... 0 No 41 - 61
+    2 F 2016-04-29 2016-04-29 ... 0 No 61 - 81
+    3 F 2016-04-29 2016-04-29 ... 0 No 1 - 21
+    4 F 2016-04-29 2016-04-29 ... 0 No 41 - 61
+    ... ... ... ... ... ... ... ...
+    110522 F 2016-05-03 2016-06-07 ... 1 No 41 - 61
+    110523 F 2016-05-03 2016-06-07 ... 1 No 41 - 61
+    110524 F 2016-04-27 2016-06-07 ... 1 No 21 - 41
+    110525 F 2016-04-27 2016-06-07 ... 1 No 21 - 41
+    110526 F 2016-04-27 2016-06-07 ... 1 No 41 - 61
+    
+    [106988 rows x 11 columns]
+TASK-4: Convert the NoShow
+the convert() function streamlines the process of converting the 'NoShow' column into a binary format, representing appointment attendance, and returns the DataFrame ds with this modified column for further analysis and modeling.
+def convert():
+    ds = drop()
+    # Method to convert 'NoShow' values into binary values (1 for 'Yes' and 0 for 'No').
+    ds['NoShow'] = ds['NoShow'].map({'Yes': 1, 'No': 0})
+    # Returns: DataFrame with 'NoShow' column values converted to 1s and 0s.
+    return ds
+***** Task9 ****
+     Gender ScheduledDay AppointmentDay ... SMSRecevied NoShow Age_group
+    0 F 2016-04-29 2016-04-29 ... 0 0 61 - 81
+    1 M 2016-04-29 2016-04-29 ... 0 0 41 - 61
+    2 F 2016-04-29 2016-04-29 ... 0 0 61 - 81
+    3 F 2016-04-29 2016-04-29 ... 0 0 1 - 21
+    4 F 2016-04-29 2016-04-29 ... 0 0 41 - 61
+    ... ... ... ... ... ... ... ...
+    110522 F 2016-05-03 2016-06-07 ... 1 0 41 - 61
+    110523 F 2016-05-03 2016-06-07 ... 1 0 41 - 61
+    110524 F 2016-04-27 2016-06-07 ... 1 0 21 - 41
+    110525 F 2016-04-27 2016-06-07 ... 1 0 21 - 41
+    110526 F 2016-04-27 2016-06-07 ... 1 0 41 - 61
+    
+    [106988 rows x 11 columns]
+TASK-5: Export the cleaned dataset
+The function export_the_dataset() exports the cleaned DataFrame to a new CSV file named 'patients.csv'. It uses the pandas library to write the data to the CSV file.
+The DataFrame obtained from the previous task is used as input and return the cleaned dataframe 'df'.
+
+def export_the_dataset():
+    df = convert()
+    # write your code to export the cleaned dataset and set the index=false and return the same as 'df'
+    df.to_csv('patients.csv', index=False)
+    return df
+TASK-6: Generate Tables using cleaned dataset
+Download the cleaned dataset by clicking on the 'patients.csv' from File explorer
+Utilize the MySQL database information provided in "Database info" to login manually and import the cleaned dataset and create the table name 'patients' that should contains the below columns.
+•	Gender
+•	ScheduledDay
+•	AppointmentDay
+•	Scholarship
+•	Hypertension
+•	Diabetes
+•	Alcoholism
+•	Handicap
+•	SMSRecevied
+•	NoShow
+•	Age_group
+To begin, we need to ensure that the cleaned datasets, "patients.csv" is uploaded to a MySQL database and that the database connection details are updated in the "db.py" file
+Running SQLS
