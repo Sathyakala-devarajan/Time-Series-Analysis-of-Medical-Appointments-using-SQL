@@ -1,0 +1,155 @@
+MODULE - 1
+
+import numpy as np
+import pandas as pd
+
+TASK-1: Load the data
+Read the patients data using 'Hospital_patients_datasets.csv' through pandas library and return the dataset for the further analysis.
+def read_csv():
+    # Method to read the CSV file "Hospital_patients_datasets.csv" using pandas.
+    # Returns: Pandas DataFrame containing the data from the CSV file.
+    ds=pd.read_csv("Hospital_patients_datasets.csv")
+    return ds
+***** Task1 ****
+     PatientId AppointmentID Gender ... Handcap SMS_received No-show
+    0 2.987250e+13 5642903 F ... 0 0 No
+    1 5.589980e+14 5642503 M ... 0 0 No
+    2 4.262960e+12 5642549 F ... 0 0 No
+    3 8.679510e+11 5642828 F ... 0 0 No
+    4 8.841190e+12 5642494 F ... 0 0 No
+    ... ... ... ... ... ... ... ...
+    110522 2.572130e+12 5651768 F ... 0 1 No
+    110523 3.596270e+12 5650093 F ... 0 1 No
+    110524 1.557660e+13 5630692 F ... 0 1 No
+    110525 9.213490e+13 5630323 F ... 0 1 No
+    110526 3.775120e+14 5629448 F ... 0 1 No
+    
+    [110527 rows x 14 columns]
+TASK-2: Find the  duplicate value
+Here, We need to check for duplicate values in a dataset 'Hospital_patients_datasets'.
+Finally, the counts of duplicated values are returned as a integer. This information can be useful in identifying duplicate data and deciding on appropriate strategies to deal with them, such as imputation or deletion.
+def check_duplicates():
+    ds = read_csv()
+    # Method to check for duplicate rows in the DataFrame.
+    # Returns: The number of duplicated rows found in the DataFrame.
+    duplicate_count = ds.duplicated().sum()  # Count duplicated rows
+    return duplicate_count        
+    return ds
+***** Task2 ****
+    0
+TASK-3: Find the null values
+The function check_null_values() , calculates the sum of null (missing) values for each column in the DataFrame.
+It then returns a Series containing the count of null values for each column in the DataFrame. This provides insights into the presence and extent of missing data in the dataset after duplicates have been dropped.
+def check_null_values():
+    ds = read_csv()
+    # Method to check for null (missing) values in the DataFrame.
+    # Returns: A pandas Series indicating the count of null values for each column in the DataFrame.
+    null_counts = ds.isnull().sum()  # Calculate null counts for each column
+    return null_counts
+    return ds
+***** Task3 ****
+    PatientId 0
+    AppointmentID 0
+    Gender 0
+    ScheduledDay 0
+    AppointmentDay 0
+    Age 0
+    Neighbourhood 0
+    Scholarship 0
+    Hipertension 0
+    Diabetes 0
+    Alcoholism 0
+    Handcap 0
+    SMS_received 0
+    No-show 0
+    dtype: int64
+TASK-4: Convert Datatype
+The converting_dtype() function reads a dataset from a CSV file, converts the 'ScheduledDay' and 'AppointmentDay' columns to pandas datetime objects with date-only information, and returns the modified dataset.
+def converting_dtype():
+    ds = read_csv()
+    # Method to convert 'ScheduledDay' and 'AppointmentDay' columns to datetime objects.
+    # Returns: DataFrame with 'ScheduledDay' and 'AppointmentDay' columns converted to datetime objects.
+    ds['ScheduledDay'] = ds['ScheduledDay'].astype('datetime64[D]')
+    ds['AppointmentDay'] = ds['AppointmentDay'].astype('datetime64[D]')
+    return ds
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> Started: 6 App is running. Please wait for output! Running Python Code
+    ***** Task1 ****
+     PatientId AppointmentID Gender ... Handcap SMS_received No-show
+    0 2.987250e+13 5642903 F ... 0 0 No
+    1 5.589980e+14 5642503 M ... 0 0 No
+    2 4.262960e+12 5642549 F ... 0 0 No
+    3 8.679510e+11 5642828 F ... 0 0 No
+    4 8.841190e+12 5642494 F ... 0 0 No
+    ... ... ... ... ... ... ... ...
+    110522 2.572130e+12 5651768 F ... 0 1 No
+    110523 3.596270e+12 5650093 F ... 0 1 No
+    110524 1.557660e+13 5630692 F ... 0 1 No
+    110525 9.213490e+13 5630323 F ... 0 1 No
+    110526 3.775120e+14 5629448 F ... 0 1 No
+    
+    [110527 rows x 14 columns]
+    ***** Task2 ****
+    0
+    ***** Task3 ****
+    PatientId 0
+    AppointmentID 0
+    Gender 0
+    ScheduledDay 0
+    AppointmentDay 0
+    Age 0
+    Neighbourhood 0
+    Scholarship 0
+    Hipertension 0
+    Diabetes 0
+    Alcoholism 0
+    Handcap 0
+    SMS_received 0
+    No-show 0
+    dtype: int64
+    ***** Task4 ****
+     PatientId AppointmentID Gender ... Handcap SMS_received No-show
+    0 2.987250e+13 5642903 F ... 0 0 No
+    1 5.589980e+14 5642503 M ... 0 0 No
+    2 4.262960e+12 5642549 F ... 0 0 No
+    3 8.679510e+11 5642828 F ... 0 0 No
+    4 8.841190e+12 5642494 F ... 0 0 No
+    ... ... ... ... ... ... ... ...
+    110522 2.572130e+12 5651768 F ... 0 1 No
+    110523 3.596270e+12 5650093 F ... 0 1 No
+    110524 1.557660e+13 5630692 F ... 0 1 No
+    110525 9.213490e+13 5630323 F ... 0 1 No
+    110526 3.775120e+14 5629448 F ... 0 1 No
+    
+    [110527 rows x 14 columns]
+TASK-5: Rename Column
+The rename_columns() function renames specific columns ('Hipertension' to 'Hypertension', 'Handcap' to 'Handicap', 'SMS_received' to 'SMSReceived', 'No-show' to 'NoShow'), and returns the modified dataset.
+def rename_columns():
+    ds = converting_dtype()
+    # Method to rename some columns in the DataFrame.
+    # Returns: DataFrame with certain column names changed to new names.
+    ds.rename(columns={
+        'Hipertension': 'Hypertension',
+        'Handcap': 'Handicap',
+        'SMS_received': 'SMSRecevied',  # Corrected column name
+        'No-show': 'NoShow'
+    }, inplace=True)
+    return ds
+***** Task5 ****
+     PatientId AppointmentID Gender ... Handicap SMSRecevied NoShow
+    0 2.987250e+13 5642903 F ... 0 0 No
+    1 5.589980e+14 5642503 M ... 0 0 No
+    2 4.262960e+12 5642549 F ... 0 0 No
+    3 8.679510e+11 5642828 F ... 0 0 No
+    4 8.841190e+12 5642494 F ... 0 0 No
+    ... ... ... ... ... ... ... ...
+    110522 2.572130e+12 5651768 F ... 0 1 No
+    110523 3.596270e+12 5650093 F ... 0 1 No
+    110524 1.557660e+13 5630692 F ... 0 1 No
+    110525 9.213490e+13 5630323 F ... 0 1 No
+    110526 3.775120e+14 5629448 F ... 0 1 No
+    
+    [110527 rows x 14 columns]
+
+
+
+
