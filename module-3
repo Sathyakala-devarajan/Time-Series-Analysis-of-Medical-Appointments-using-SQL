@@ -1,0 +1,192 @@
+MODULE – 3
+TASK – 1: Write an SQL query to solve the given problem statement.
+Count the number of appointments for each day in the given dataset:
+select count(*) from patients;
+**** Task 1: ****
+    Total Records Fetched: 1
+    First 10 records of your query
+    Headers:
+    count(*),
+    
+    Values:
+    106988,
+TASK – 2: Write an SQL query to solve the given problem statement.
+Count the number of appointments for each day in the given dataset:
+SELECT DATE(AppointmentDay) AS appointment_day, COUNT(*) AS appointment_count
+FROM patients
+GROUP BY AppointmentDay
+ORDER BY AppointmentDay;
+**** Task 2: ****
+    Total Records Fetched: 27
+    First 10 records of your query
+    Headers:
+    appointment_day, appointment_count,
+    
+    Values:
+    2016-04-29, 3104,
+    2016-05-02, 4214,
+    2016-05-03, 4129,
+    2016-05-04, 4048,
+    2016-05-05, 4113,
+    2016-05-06, 3791,
+    2016-05-09, 4352,
+    2016-05-10, 4177,
+    2016-05-11, 4347,
+    2016-05-12, 4233,
+    2016-05-13, 3885,
+TASK-3: Write an SQL query to solve the given problem statement.
+Calculate the average number of appointments (Set to nearest whole number) per day in the given dataset.
+SELECT ROUND(AVG(appointment_count)) AS average_appointments_per_day
+FROM (
+    SELECT DATE(AppointmentDay) AS appointment_day, COUNT(*) AS appointment_count
+    FROM patients
+    GROUP BY appointment_day
+) AS appointment_counts;
+
+***Your Output: 
+    Total Records Fetched: 1
+    First 10 records of your query
+    Headers: 
+    average_appointments_per_day, 
+    
+    Values:
+    3963,
+TASK-4: Write an SQL query to solve the given problem statement.
+Find the day with the highest number of appointments in the given dataset.
+SELECT DATE(AppointmentDay) AS appointment_day, COUNT(*) AS appointment_count
+FROM patients
+GROUP BY appointment_day
+ORDER BY appointment_count DESC
+LIMIT 1;
+ ***Your Output: 
+    Total Records Fetched: 1
+    First 10 records of your query
+    Headers: 
+    appointment_day, appointment_count, 
+    
+    Values:
+    2016-06-06, 4529, 
+TASK-5: Write an SQL query to solve the given problem statement.
+Calculate the monthly average number of appointments in the given dataset.
+Hint : Use 'DATE_FORMAT()' function.
+SELECT DATE_FORMAT(AppointmentDay, '%Y-%m') AS Month,
+       round(avg(appointment_count)) AS Appointments_Count
+FROM (
+    SELECT AppointmentDay, COUNT(*) AS appointment_count
+    FROM patients
+    GROUP BY DATE_FORMAT(AppointmentDay, '%Y-%m')
+) AS appointment_counts
+GROUP BY Month;
+***Your Output: 
+    Total Records Fetched: 3
+    First 10 records of your query
+    Headers: 
+    Month, Appointments_Count, 
+    
+    Values:
+    2016-04, 3104, 
+    2016-05, 78202, 
+    2016-06, 25682, 
+TASK-6: Write an SQL query to solve the given problem statement.
+Find the month with the highest number of appointments in the given dataset.
+SELECT DATE_FORMAT(AppointmentDay, '%Y-%m') AS appointment_month,
+       COUNT(*) AS appointment_count
+FROM patients
+GROUP BY appointment_month
+ORDER BY appointment_count DESC
+LIMIT 1;
+ ***Your Output: 
+    Total Records Fetched: 1
+    First 10 records of your query
+    Headers: 
+    appointment_month, appointment_count, 
+    
+    Values:
+    2016-05, 78202, 
+TASK-7: Write an SQL query to solve the given problem statement.
+Calculate the weekly average number of appointments in the given dataset.
+SELECT YEAR(AppointmentDay) as year,WEEK(AppointmentDay) AS week,
+       round(AVG(appointment_count)) AS average_appointments_per_week
+FROM (
+    SELECT AppointmentDay, COUNT(*) AS appointment_count
+    FROM patients
+    GROUP BY YEARWEEK(AppointmentDay)
+) AS appointment_counts
+GROUP BY week;
+ ***Your Output: 
+    Total Records Fetched: 7
+    First 10 records of your query
+    Headers: 
+    year, week, average_appointments_per_week, 
+    
+    Values:
+    2016, 17, 3104, 
+    2016, 18, 20295, 
+    2016, 19, 21033, 
+    2016, 20, 20712, 
+    2016, 21, 7644, 
+    2016, 22, 21051, 
+    2016, 23, 13149, 
+TASK-8: Write an SQL query to solve the given problem statement.
+Find the week with the highest number of appointments in the given dataset.
+SELECT YEAR(AppointmentDay) as year,WEEK(AppointmentDay) AS week,
+       COUNT(*) AS appointment_count
+FROM patients
+GROUP BY week
+ORDER BY appointment_count DESC
+LIMIT 1;
+***Your Output: 
+    Total Records Fetched: 1
+    First 10 records of your query
+    Headers: 
+    year, week, appointment_count, 
+    
+    Values:
+    2016, 22, 21051, 
+TASK-9: Write an SQL query to solve the given problem statement.
+What is the distribution of appointments based on gender in the dataset?
+SELECT Gender, COUNT(*) AS appointment_count
+FROM patients
+GROUP BY Gender;
+***Your Output: 
+    Total Records Fetched: 2
+    First 10 records of your query
+    Headers: 
+    Gender, appointment_count, 
+    
+    Values:
+    F, 70119, 
+    M, 36869,
+TASK-10: Write an SQL query to solve the given problem statement.
+Calculate the number of appointments per weekday in the given dataset. Order the appointment counts in descending.
+Hint : Use 'DAYNAME()' function.
+SELECT DAYNAME(AppointmentDay) AS weekday, COUNT(*) AS appointment_count
+FROM patients
+GROUP BY weekday
+ORDER BY appointment_count DESC;
+***Your Output: 
+    Total Records Fetched: 6
+    First 10 records of your query
+    Headers: 
+    weekday, appointment_count, 
+    
+    Values:
+    Wednesday, 25090, 
+    Tuesday, 24831, 
+    Monday, 21904, 
+    Friday, 18465, 
+    Thursday, 16659, 
+    Saturday, 39, 
+ 
+TASK-11: Write an SQL query to solve the given problem statement.
+Calculate the average time between scheduling and the appointment day in the given dataset. Set to nearest whole number
+SELECT ROUND(AVG(DATEDIFF(AppointmentDay, ScheduledDay))) AS average_time_in_days
+FROM patients;
+***Your Output: 
+    Total Records Fetched: 1
+    First 10 records of your query
+    Headers: 
+    average_time_in_days, 
+    
+    Values:
+    10, 
